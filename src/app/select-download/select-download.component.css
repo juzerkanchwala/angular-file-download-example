@@ -1,0 +1,27 @@
+.select-download-container {
+    display: flex;
+    div {
+        padding: 6px;
+    }
+
+    .select-checkbox {
+        margin-right: 50px;    
+        display: inherit;
+        input {
+            margin-right: 20px;
+        }
+        label {
+            width: 150px
+        }
+    }
+    
+    .download-selected {
+        button {
+            &:disabled {
+                cursor: default;
+            }
+        }
+    }
+
+}
+

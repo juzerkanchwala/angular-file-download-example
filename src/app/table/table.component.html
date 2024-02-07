@@ -1,0 +1,28 @@
+<div class="container">
+    <!-- select download component -->
+    <select-download [data]="data"></select-download>
+    
+    <!-- table -->
+    <table summary="This is the test table">
+        <tbody>
+            <tr class="headers">
+                <th></th>
+                <th [id]="i" scope="col" *ngFor="let value of tableHeader; let i = index">{{value}}</th>                        
+            </tr>
+            <tr *ngFor="let item of data; let i = index" class="row-data" #tableItem (click)="onItemClicked(item)">
+                <td [headers]="i">
+                    <input type="checkbox" [value]="i" style="pointer-events: none;"
+                        [attr.aria-label]="'Select '+item.device">
+                </td>
+                <td [headers]="i" class="name">{{item.name}}</td>
+                <td [headers]="i" class="device">{{item.device}}</td>
+                <td [headers]="i" class="path">{{item.path}}</td>
+                <td [headers]="i" class="status">
+                    <i aria-hidden="true" class="fa fa-circle" style="color: green; padding-right: 5px;"
+                     *ngIf="item.status === 'available'"></i>
+                    <label [ngClass]="{'not-available': item.status !== 'available'}">{{item.status}}</label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

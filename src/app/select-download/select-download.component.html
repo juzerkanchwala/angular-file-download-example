@@ -1,0 +1,14 @@
+<div class="select-download-container">
+    <div class="select-checkbox">
+        <input type="checkbox" id="select-all" name="select-all" aria-label="Select All"
+            [indeterminate]="intermediate" [checked]="checked" (click)="onSelectAllClicked()">
+        <label for="select-all">{{selectedMessage}}</label>
+    </div>
+    <div class="download-selected">
+        <button class="btn" id="download-button" (click)="downloadData()" 
+                [disabled]="selectedItems.length === 0">
+            <i class="fa fa-download"></i>
+            Download Selected
+        </button>
+    </div>
+</div>

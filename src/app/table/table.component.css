@@ -1,0 +1,53 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 2px 2px 2px #dcdbdb;
+    border: 1px solid #ebe9e9;
+    padding: 6px;
+    overflow: auto;
+
+    table, tr {
+        border: 2px solid #d2cfcf;
+    }
+
+    table {
+        th, td {
+            padding: 12px 6px;
+        }
+    
+        text-align: left;
+    
+        th, .status {
+            text-transform: capitalize;
+        }
+    
+        .headers {
+            th:last-child {
+                padding-left: 24px;
+            }
+        }
+    
+        .status {
+            .not-available {
+                padding-left: 18px;
+            }
+        }
+    
+        .row-data {
+            cursor: pointer;
+            &:hover {
+                background-color: #ebe9e9;
+            };
+
+            &:active, &.selected {
+                background-color: #d6d4d4;
+            };
+        }
+        
+    }
+}
+
+
+
+
