@@ -2,6 +2,11 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.10.
 
+## Prerequisites
+Download and install node from https://nodejs.org/en/download
+
+Install angular cli by running the command `npm install -g @angular/cli` in your terminal
+
 ## Installing dependencies
 
 Run `npm install` to install required dependencies after cloning or downloading the project.
