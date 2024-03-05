@@ -1,20 +1,20 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
 import { TableData } from '../models/table-data';
 import { CheckBoxStateService } from '../services/check-box-state.service';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'select-download',
   standalone: true,
   imports: [],
   templateUrl: './select-download.component.html',
-  styleUrl: './select-download.component.css'
+  styleUrl: './select-download.component.css',
 })
 export class SelectDownloadComponent implements OnInit {
+  private checkBoxStateService: CheckBoxStateService =
+    inject(CheckBoxStateService);
 
-  private checkBoxStateService: CheckBoxStateService = inject(CheckBoxStateService)
-
-  selectedMessage: string = 'None Selected'
+  selectedMessage: string = 'None Selected';
 
   selectedItems: TableData[] = [];
 
@@ -28,26 +28,33 @@ export class SelectDownloadComponent implements OnInit {
   private selectedItemsSubscription: Subscription;
 
   ngOnInit() {
-    this.checkSubscription = this.checkBoxStateService.checked$.subscribe((value) => this.checked = value);
+    this.checkSubscription = this.checkBoxStateService.checked$.subscribe(
+      (value) => (this.checked = value)
+    );
 
-    this.intermediateSubscription = this.checkBoxStateService.intermediate$.subscribe((value) => this.intermediate = value);
+    this.intermediateSubscription =
+      this.checkBoxStateService.intermediate$.subscribe(
+        (value) => (this.intermediate = value)
+      );
 
-    this.selectedItemsSubscription = this.checkBoxStateService.selectedItems$.subscribe((data) => {
-      this.selectedItems = data;
-      this.updateSelectAllState();
-      this.selectedMessage = data.length > 0 ? 'Selected ' + data.length : 'None Selected';
-    });
+    this.selectedItemsSubscription =
+      this.checkBoxStateService.selectedItems$.subscribe((data) => {
+        this.selectedItems = data;
+        this.updateSelectAllState();
+        this.selectedMessage =
+          data.length > 0 ? 'Selected ' + data.length : 'None Selected';
+      });
   }
 
   updateSelectAllState(): void {
-    if(this.selectedItems.length > 0) {
+    if (this.selectedItems.length > 0) {
       if (this.selectedItems.length === this.data.length) {
         this.checkBoxStateService.checkedState(true);
         this.checkBoxStateService.intermediateState(false);
       } else {
         this.checkBoxStateService.checkedState(false);
         this.checkBoxStateService.intermediateState(true);
-      }      
+      }
     } else {
       this.checkBoxStateService.intermediateState(false);
       this.checkBoxStateService.checkedState(false);
@@ -55,7 +62,7 @@ export class SelectDownloadComponent implements OnInit {
   }
 
   onSelectAllClicked(): void {
-    if(this.checked) {
+    if (this.checked) {
       this.checkBoxStateService.checkedState(false);
       this.checkBoxStateService.selectedItemsState([]);
     } else {
@@ -66,11 +73,12 @@ export class SelectDownloadComponent implements OnInit {
   }
 
   downloadData(): void {
-    const output = {};
-
-    this.selectedItems.filter((item) => item.status === 'available').forEach((value) => {
-      output[value.device] = value.path;
-    });
+    const output = this.selectedItems.reduce((acc, currValue) => {
+      if (currValue.status === 'available') {
+        acc[currValue.device] = currValue.path;
+      }
+      return acc;
+    }, {});
 
     alert(JSON.stringify(output, null, ' '));
   }
@@ -80,5 +88,4 @@ export class SelectDownloadComponent implements OnInit {
     this.intermediateSubscription.unsubscribe();
     this.selectedItemsSubscription.unsubscribe();
   }
-
 }

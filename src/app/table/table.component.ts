@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ViewChildren, QueryList, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject, ViewChildren, QueryList, ElementRef, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { SelectDownloadComponent } from '../select-download/select-download.component';
 import { TableData } from '../models/table-data';
 import { TableDataService } from '../services/table-data.service';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent implements OnInit, AfterViewInit {
+export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private tableDataService: TableDataService = inject(TableDataService);
 
@@ -33,7 +33,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // get table data from table data service
     this.tableDataSubscription = this.tableDataService.getTableData().subscribe((tableData) => {
-          this.data = tableData;
+      this.data = tableData;
     });
 
     // get columns for table headers
@@ -50,23 +50,24 @@ export class TableComponent implements OnInit, AfterViewInit {
    * function called when item in the table is selected 
    * and deselected
    */
-  onItemClicked(value: TableData): void {
-    if(this.selectedItems.includes(value)) {
-      this.selectedItems.splice(this.selectedItems.indexOf(value), 1);      
+  onItemClicked(value: TableData, event?: any): void {
+    if (this.selectedItems.includes(value)) {
+      this.selectedItems.splice(this.selectedItems.indexOf(value), 1);
     } else {
       this.selectedItems.push(value);
     }
 
     const index = this.data.indexOf(value);
     const filteredItem = this.tableItem.filter((item) =>
-            parseInt(item.nativeElement.querySelector('input').value) === index);
+      parseInt(item.nativeElement.querySelector('input').value) === index);
 
     filteredItem.map(item => {
-      item.nativeElement.querySelector('input').checked = !item.nativeElement.querySelector('input').checked;
-      const inputElemState = item.nativeElement.querySelector('input').checked;
-      this.updateClassName(inputElemState, item);
+      const inputElem = item.nativeElement.querySelector('input');
+      if(event && event?.pointerType === 'mouse') {
+        inputElem.checked = !inputElem.checked;
+      }
+      this.updateClassName(inputElem.checked, item);
     });
-
     this.checkBoxStateService.selectedItemsState(this.selectedItems);
   }
 
@@ -75,10 +76,10 @@ export class TableComponent implements OnInit, AfterViewInit {
    * check box from select download component is checked and unchecked
    */
   updateCheckBoxState(value: boolean): void {
-    if(this.selectedItems.length === this.data.length) {
+    if (this.selectedItems.length === this.data.length) {
       this.tableItem.forEach((item) => {
         item.nativeElement.querySelector('input').checked = value;
-        this.updateClassName(value, item);      
+        this.updateClassName(value, item);
       });
     }
   }

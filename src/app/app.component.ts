@@ -8,7 +8,7 @@ import { TableComponent } from './table/table.component';
   standalone: true,
   imports: [CommonModule, RouterOutlet, TableComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'File-Download';

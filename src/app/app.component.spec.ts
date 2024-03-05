@@ -26,6 +26,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h2')?.textContent).toContain('File Download Project');
+    expect(compiled.querySelector('h2')?.textContent).toContain(
+      'File Download Project'
+    );
   });
 });
