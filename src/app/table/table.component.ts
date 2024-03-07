@@ -51,7 +51,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
    * and deselected
    */
   onItemClicked(value: TableData, event?: any): void {
-    if (this.selectedItems.includes(value)) {
+        if (this.selectedItems.includes(value)) {
       this.selectedItems.splice(this.selectedItems.indexOf(value), 1);
     } else {
       this.selectedItems.push(value);
